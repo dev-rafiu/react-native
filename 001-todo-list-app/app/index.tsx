@@ -31,7 +31,7 @@ function App() {
     if (currentIndex < ONBOARDING_SLIDES.length - 1) {
       slideRef?.current?.scrollToIndex({ index: currentIndex + 1 });
     } else {
-      router.push("/(tabs)/settings");
+      router.push("/auth/login");
     }
   };
 
@@ -61,7 +61,10 @@ function App() {
 
       <View style={styles.pagination}>
         <Paginator data={ONBOARDING_SLIDES} scrollX={scrollX} />
-        <NextButton scrollTo={scrollTo} />
+        <NextButton
+          scrollTo={scrollTo}
+          isLastScreen={currentIndex === ONBOARDING_SLIDES.length - 1}
+        />
       </View>
     </View>
   );
