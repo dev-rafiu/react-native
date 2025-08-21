@@ -13,10 +13,14 @@ import "react-native-reanimated";
 import { useColorScheme } from "@/src/hooks/useColorScheme";
 import { useEffect, useState } from "react";
 import { QueryProvider } from "@/src/providers/QueryProvider";
+import { useOnboarding } from "@/src/hooks/useOnboarding";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [appIsReady, setAppIsReady] = useState(false);
+
+  const { hasSeenOnboarding, isLoading: onboardingLoading } = useOnboarding();
+
   const [fontsLoaded] = useFonts({
     "Poppins-Thin": require("../assets/fonts/Poppins/Poppins-Thin.ttf"),
     "Poppins-ExtraLight": require("../assets/fonts/Poppins/Poppins-ExtraLight.ttf"),
@@ -45,8 +49,6 @@ export default function RootLayout() {
   useEffect(() => {
     async function prepare() {
       try {
-        // Artificially delay for two seconds to simulate a slow loading
-        // experience. Remove this if you copy and paste the code!
         await new Promise((resolve) => setTimeout(resolve, 2000));
       } catch (e) {
         console.warn(e);
@@ -58,11 +60,7 @@ export default function RootLayout() {
     prepare();
   }, []);
 
-  if (!appIsReady) {
-    return null;
-  }
-
-  if (!fontsLoaded) {
+  if (!appIsReady || !fontsLoaded || onboardingLoading) {
     return null;
   }
 
@@ -70,6 +68,10 @@ export default function RootLayout() {
     <QueryProvider>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <Stack>
+          {!hasSeenOnboarding && (
+            <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+          )}
+
           <Stack.Screen name="index" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="auth" options={{ headerShown: false }} />
