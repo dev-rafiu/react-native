@@ -11,11 +11,11 @@ import {
   View,
 } from "react-native";
 
-import { AntDesign } from "@expo/vector-icons";
-import { Link } from "expo-router";
-import { useState } from "react";
 import { Typography } from "@/src/constants/Typography";
 import { useSimulateAuth } from "@/src/hooks/useAuth";
+import { AntDesign } from "@expo/vector-icons";
+import { Link, router } from "expo-router";
+import { useState } from "react";
 
 function LoginScreen() {
   const [formState, setFormState] = useState({
@@ -40,7 +40,11 @@ function LoginScreen() {
       return;
     }
 
-    simulateAuthMutation.mutate();
+    simulateAuthMutation.mutate(undefined, {
+      onSuccess: () => {
+        router.replace("/(tabs)");
+      },
+    });
   };
 
   return (

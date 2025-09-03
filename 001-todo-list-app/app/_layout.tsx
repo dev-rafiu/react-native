@@ -1,3 +1,4 @@
+import { useOnboarding } from "@/src/hooks/useOnboarding";
 import {
   DarkTheme,
   DefaultTheme,
@@ -11,9 +12,8 @@ import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/src/hooks/useColorScheme";
-import { useEffect, useState } from "react";
 import { QueryProvider } from "@/src/providers/QueryProvider";
-import { useOnboarding } from "@/src/hooks/useOnboarding";
+import { useEffect, useState } from "react";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -69,7 +69,10 @@ export default function RootLayout() {
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <Stack>
           {!hasSeenOnboarding && (
-            <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="onboarding/index"
+              options={{ headerShown: false }}
+            />
           )}
 
           <Stack.Screen name="index" options={{ headerShown: false }} />
@@ -78,7 +81,7 @@ export default function RootLayout() {
           <Stack.Screen name="+not-found" />
         </Stack>
 
-        <StatusBar style="light" />
+        <StatusBar style="dark" />
       </ThemeProvider>
     </QueryProvider>
   );
