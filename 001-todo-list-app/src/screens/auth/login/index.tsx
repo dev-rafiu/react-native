@@ -1,5 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
-
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ActivityIndicator,
   Alert,
@@ -17,25 +18,26 @@ import { AntDesign } from "@expo/vector-icons";
 import { Link, router } from "expo-router";
 import { useState } from "react";
 
+import { z } from "zod";
+
+const formSchema = z.object({
+  email: z.string().min(1, { message: "Email is required" }).email({
+    message: "Invalid email",
+  }),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+});
+type FormSchema = z.infer<typeof formSchema>;
+
 function LoginScreen() {
-  const [formState, setFormState] = useState({
-    email: "",
-    password: "",
+  const { control, handleSubmit } = useForm<FormSchema>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
-  const simulateAuthMutation = useSimulateAuth();
-
-  const handleInputChange = (key: string, value: string) => {
-    setFormState({ ...formState, [key]: value });
-  };
-
-  const togglePasswordVisibility = () => {
-    setIsPasswordVisible(!isPasswordVisible);
-  };
-
-  const handleSignIn = () => {
-    if (formState.email === "" || formState.password === "") {
+  const onSubmit = (data: FormSchema) => {
+    if (data.email === "" || data.password === "") {
       Alert.alert("Please fill in all fields");
       return;
     }
@@ -45,6 +47,14 @@ function LoginScreen() {
         router.replace("/(tabs)");
       },
     });
+  };
+
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const simulateAuthMutation = useSimulateAuth();
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
   };
 
   return (
@@ -74,15 +84,25 @@ function LoginScreen() {
         <View style={styles.formItem}>
           <Text style={styles.formTitle}>Email</Text>
 
-          <TextInput
-            style={styles.input}
-            keyboardType="email-address"
-            placeholder="Enter your email"
-            placeholderTextColor="gray"
-            value={formState.email}
-            onChangeText={(text) => handleInputChange("email", text)}
-            autoCapitalize="none"
-            autoCorrect={false}
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            name="email"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                onChangeText={onChange}
+                onBlur={onBlur}
+                value={value}
+                style={styles.input}
+                keyboardType="email-address"
+                placeholder="Enter your email"
+                placeholderTextColor="gray"
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+            )}
           />
         </View>
 
@@ -90,13 +110,25 @@ function LoginScreen() {
         <View style={styles.formItem}>
           <Text style={styles.formTitle}>Password</Text>
           <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              secureTextEntry={!isPasswordVisible}
-              placeholder="Enter your password"
-              placeholderTextColor="gray"
-              value={formState.password}
-              onChangeText={(text) => handleInputChange("password", text)}
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              name="password"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={styles.input}
+                  secureTextEntry={!isPasswordVisible}
+                  placeholder="Enter your password"
+                  placeholderTextColor="gray"
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+              )}
             />
 
             <Pressable
@@ -120,7 +152,7 @@ function LoginScreen() {
 
       {/* sign in button */}
       <View style={styles.buttonContainer}>
-        <Pressable style={styles.button} onPress={handleSignIn}>
+        <Pressable style={styles.button} onPress={handleSubmit(onSubmit)}>
           <Text style={styles.buttonText}>
             {simulateAuthMutation.isPending ? (
               <ActivityIndicator size="small" color="#fff" />

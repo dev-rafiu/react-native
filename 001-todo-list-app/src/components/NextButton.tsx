@@ -1,17 +1,14 @@
 import { AntDesign } from "@expo/vector-icons";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 
-function NextButton({
-  scrollTo,
-  isLastScreen,
-}: {
+type Props = {
   scrollTo: () => void;
   isLastScreen: boolean;
-}) {
+};
+function NextButton({ scrollTo, isLastScreen }: Props) {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={scrollTo} style={styles.button}>
-        {/* display a check icon on last onboarding screen */}
         {isLastScreen ? (
           <AntDesign name="check" size={32} color={"#000"} />
         ) : (
@@ -28,9 +25,9 @@ const styles = StyleSheet.create({
   container: {},
 
   button: {
-    width: 50,
-    height: 50,
-    borderRadius: "50%",
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",

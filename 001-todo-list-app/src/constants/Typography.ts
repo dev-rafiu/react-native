@@ -68,7 +68,7 @@ export const Typography = {
 
   bodyMedium: {
     fontFamily: FontFamily.regular,
-    fontSize: 16,
+    fontSize: 14,
     lineHeight: 24,
     letterSpacing: 0.1,
   } as TextStyle,

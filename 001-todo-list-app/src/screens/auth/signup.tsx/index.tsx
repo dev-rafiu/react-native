@@ -1,4 +1,11 @@
+import { Typography } from "@/src/constants/Typography";
+import { useSimulateAuth } from "@/src/hooks/useAuth";
+import { AntDesign } from "@expo/vector-icons";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { LinearGradient } from "expo-linear-gradient";
+import { Link, router } from "expo-router";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import {
   ActivityIndicator,
   Alert,
@@ -9,41 +16,47 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
-import { Link } from "expo-router";
-import { useState } from "react";
-import { Typography } from "@/src/constants/Typography";
-import { useSimulateAuth } from "@/src/hooks/useAuth";
+import { z } from "zod";
+
+const formSchema = z.object({
+  fullName: z.string().min(1, { message: "Full Name is required" }),
+  email: z.string().min(1, { message: "Email is required" }).email({
+    message: "Invalid email",
+  }),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+});
+
+type FormSchema = z.infer<typeof formSchema>;
 
 function SignupScreen() {
-  const [formState, setFormState] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-  });
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const simulateAuthMutation = useSimulateAuth();
 
-  const handleSignUp = () => {
-    if (
-      formState.fullName === "" ||
-      formState.email === "" ||
-      formState.password === ""
-    ) {
+  const { control, handleSubmit } = useForm<FormSchema>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      fullName: "",
+      email: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = (data: FormSchema) => {
+    if (data.fullName === "" || data.email === "" || data.password === "") {
       Alert.alert("Please fill in all fields");
       return;
     }
 
-    simulateAuthMutation.mutate();
+    simulateAuthMutation.mutate(undefined, {
+      onSuccess: () => {
+        router.replace("/(tabs)");
+      },
+    });
   };
 
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
-  };
-
-  const handleInputChange = (key: string, value: string) => {
-    setFormState({ ...formState, [key]: value });
   };
 
   return (
@@ -70,16 +83,21 @@ function SignupScreen() {
         {/* full name */}
         <View style={styles.formItem}>
           <Text style={styles.formTitle}>Full Name</Text>
-
-          <TextInput
-            style={styles.input}
-            keyboardType="default"
-            placeholder="Enter your full name"
-            placeholderTextColor="gray"
-            value={formState.fullName}
-            onChangeText={(text) => handleInputChange("fullName", text)}
-            autoCapitalize="none"
-            autoCorrect={false}
+          <Controller
+            control={control}
+            name="fullName"
+            render={({ field }) => (
+              <TextInput
+                style={styles.input}
+                keyboardType="default"
+                placeholder="Enter your full name"
+                placeholderTextColor="gray"
+                value={field.value}
+                onChangeText={field.onChange}
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+            )}
           />
         </View>
 
@@ -87,15 +105,21 @@ function SignupScreen() {
         <View style={styles.formItem}>
           <Text style={styles.formTitle}>Email</Text>
 
-          <TextInput
-            style={styles.input}
-            keyboardType="email-address"
-            placeholder="Enter your email"
-            placeholderTextColor="gray"
-            value={formState.email}
-            onChangeText={(text) => handleInputChange("email", text)}
-            autoCapitalize="none"
-            autoCorrect={false}
+          <Controller
+            control={control}
+            name="email"
+            render={({ field }) => (
+              <TextInput
+                style={styles.input}
+                keyboardType="email-address"
+                placeholder="Enter your email"
+                placeholderTextColor="gray"
+                value={field.value}
+                onChangeText={field.onChange}
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+            )}
           />
         </View>
 
@@ -103,15 +127,21 @@ function SignupScreen() {
         <View style={styles.formItem}>
           <Text style={styles.formTitle}>Password</Text>
           <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              secureTextEntry={!isPasswordVisible}
-              placeholder="Enter your password"
-              placeholderTextColor="gray"
-              value={formState.password}
-              onChangeText={(text) => handleInputChange("password", text)}
-              autoCapitalize="none"
-              autoCorrect={false}
+            <Controller
+              control={control}
+              name="password"
+              render={({ field }) => (
+                <TextInput
+                  style={styles.input}
+                  secureTextEntry={!isPasswordVisible}
+                  placeholder="Enter your password"
+                  placeholderTextColor="gray"
+                  value={field.value}
+                  onChangeText={field.onChange}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+              )}
             />
 
             <Pressable
@@ -130,7 +160,7 @@ function SignupScreen() {
 
       {/* sign up button */}
       <View style={styles.buttonContainer}>
-        <Pressable style={styles.button} onPress={handleSignUp}>
+        <Pressable style={styles.button} onPress={handleSubmit(onSubmit)}>
           <Text style={styles.buttonText}>
             {simulateAuthMutation.isPending ? (
               <ActivityIndicator size="small" color="#fff" />

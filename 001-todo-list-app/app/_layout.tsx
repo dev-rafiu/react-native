@@ -14,6 +14,7 @@ import "react-native-reanimated";
 import { useColorScheme } from "@/src/hooks/useColorScheme";
 import { QueryProvider } from "@/src/providers/QueryProvider";
 import { useEffect, useState } from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -60,29 +61,37 @@ export default function RootLayout() {
     prepare();
   }, []);
 
+  // useEffect(() => {
+  //   resetOnboarding();
+  // }, []);
+
   if (!appIsReady || !fontsLoaded || onboardingLoading) {
     return null;
   }
 
   return (
     <QueryProvider>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Stack>
-          {!hasSeenOnboarding && (
-            <Stack.Screen
-              name="onboarding/index"
-              options={{ headerShown: false }}
-            />
-          )}
+      <SafeAreaProvider>
+        <ThemeProvider
+          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        >
+          <Stack screenOptions={{ headerShown: false }}>
+            {!hasSeenOnboarding && (
+              <Stack.Screen
+                name="onboarding/index"
+                options={{ headerShown: false }}
+              />
+            )}
 
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="auth" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="auth" options={{ headerShown: false }} />
+            <Stack.Screen name="+not-found" />
+          </Stack>
 
-        <StatusBar style="dark" />
-      </ThemeProvider>
+          <StatusBar style="dark" />
+        </ThemeProvider>
+      </SafeAreaProvider>
     </QueryProvider>
   );
 }

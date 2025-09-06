@@ -31,7 +31,7 @@ extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
 }
 expoAutolinking.useExpoModules()
 
-rootProject.name = '001-todo-list-app'
+rootProject.name = '001todolistapp'
 
 expoAutolinking.useExpoVersionCatalog()
 

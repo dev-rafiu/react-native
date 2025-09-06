@@ -1,11 +1,23 @@
 import NextButton from "@/src/components/NextButton";
 import OnboardingItem from "@/src/components/OnboardingItem";
 import Paginator from "@/src/components/Paginator";
-import { ONBOARDING_SLIDES } from "@/src/utils/slides";
 import { useOnboarding } from "@/src/hooks/useOnboarding";
+import { ONBOARDING_SLIDES } from "@/src/utils/slides";
+// import * as NavigationBar from "expo-navigation-bar"; // Temporarily disabled due to native module issues
 import { router } from "expo-router";
-import { useRef, useState } from "react";
-import { Animated, FlatList, StyleSheet, View, ViewToken } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import {
+  Animated,
+  Dimensions,
+  FlatList,
+  Platform,
+  StatusBar,
+  StyleSheet,
+  View,
+  ViewToken,
+} from "react-native";
+
+import * as SystemUI from "expo-system-ui";
 
 interface Slides {
   id: number;
@@ -18,6 +30,24 @@ function OnboardingScreen() {
   const scrollX = useRef(new Animated.Value(0)).current;
   const slideRef = useRef<FlatList<Slides>>(null);
   const { markOnboardingAsComplete } = useOnboarding();
+
+  const { height: screenHeight } = Dimensions.get("screen");
+
+  useEffect(() => {
+    StatusBar.setHidden(true, "fade");
+
+    if (Platform.OS === "android") {
+      SystemUI.setBackgroundColorAsync("transparent");
+      // NavigationBar.setVisibilityAsync("hidden"); // Temporarily disabled
+    }
+
+    return () => {
+      StatusBar.setHidden(false, "fade");
+      if (Platform.OS === "android") {
+        // NavigationBar.setVisibilityAsync("visible"); // Temporarily disabled
+      }
+    };
+  }, []);
 
   const viewableItemsChanged = useRef(
     ({ viewableItems }: { viewableItems: ViewToken[] }) => {
@@ -33,13 +63,19 @@ function OnboardingScreen() {
     if (currentIndex < ONBOARDING_SLIDES.length - 1) {
       slideRef?.current?.scrollToIndex({ index: currentIndex + 1 });
     } else {
+      // Restore status bar on both platforms
+      StatusBar.setHidden(false, "fade");
+      if (Platform.OS === "android") {
+        // NavigationBar.setVisibilityAsync("visible"); // Temporarily disabled
+      }
+
       await markOnboardingAsComplete();
       router.replace("/auth/login");
     }
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { height: screenHeight }]}>
       <View style={styles.flatListContainer}>
         <FlatList
           ref={slideRef}
@@ -62,7 +98,7 @@ function OnboardingScreen() {
         />
       </View>
 
-      <View style={styles.pagination}>
+      <View style={styles.paginationContainer}>
         <Paginator data={ONBOARDING_SLIDES} scrollX={scrollX} />
         <NextButton
           scrollTo={scrollTo}
@@ -79,17 +115,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+
   flatListContainer: {
     flex: 1,
   },
-  pagination: {
+
+  paginationContainer: {
     position: "absolute",
-    bottom: 50,
-    left: 0,
+    bottom: 70,
     right: 0,
     flexDirection: "row",
     justifyContent: "space-between",
+    gap: 10,
     alignItems: "center",
-    paddingHorizontal: 20,
+    paddingRight: 40,
+    width: "70%",
   },
 });

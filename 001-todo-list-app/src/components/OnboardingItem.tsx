@@ -1,7 +1,7 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
+import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+const { width: screenWidth, height: screenHeight } = Dimensions.get("screen");
 
 export type TItem = {
   id: number;
@@ -29,17 +29,16 @@ export default OnboardingItem;
 
 const styles = StyleSheet.create({
   parentView: {
-    flex: 1,
-    padding: 20,
-    height: screenHeight,
     width: screenWidth,
+    height: screenHeight,
+    padding: 20,
   },
 
   container: {
+    flex: 1,
     alignItems: "center",
     marginTop: 100,
-    height: 400,
-    justifyContent: "space-between",
+    gap: 40,
   },
 
   image: {
@@ -52,7 +51,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
     color: "#fff",
-    maxWidth: 255,
+    maxWidth: 240,
     fontFamily: "Poppins-Regular",
     lineHeight: 23,
     textAlign: "center",

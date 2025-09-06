@@ -1,4 +1,4 @@
-package com.devrafiu.x001todolistapp
+package com.001todolistapp
 
 import android.app.Application
 import android.content.res.Configuration
