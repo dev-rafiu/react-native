@@ -20,9 +20,8 @@ const StickyHeader: React.FC<StickyHeaderProps> = ({ title }) => {
   const insets = useSafeAreaInsets();
   const segments = useSegments();
 
-  // Get dynamic title based on current route
   const getDynamicTitle = () => {
-    if (title) return title; // Use provided title if available
+    if (title) return title;
 
     const currentTab = String(segments[segments.length - 1]);
     if (currentTab === "index") return "Home";

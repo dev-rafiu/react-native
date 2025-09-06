@@ -3,7 +3,7 @@ import OnboardingItem from "@/src/components/OnboardingItem";
 import Paginator from "@/src/components/Paginator";
 import { useOnboarding } from "@/src/hooks/useOnboarding";
 import { ONBOARDING_SLIDES } from "@/src/utils/slides";
-// import * as NavigationBar from "expo-navigation-bar"; // Temporarily disabled due to native module issues
+import * as NavigationBar from "expo-navigation-bar";
 import { router } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -38,13 +38,13 @@ function OnboardingScreen() {
 
     if (Platform.OS === "android") {
       SystemUI.setBackgroundColorAsync("transparent");
-      // NavigationBar.setVisibilityAsync("hidden"); // Temporarily disabled
+      NavigationBar.setVisibilityAsync("hidden");
     }
 
     return () => {
       StatusBar.setHidden(false, "fade");
       if (Platform.OS === "android") {
-        // NavigationBar.setVisibilityAsync("visible"); // Temporarily disabled
+        NavigationBar.setVisibilityAsync("visible");
       }
     };
   }, []);
@@ -66,7 +66,7 @@ function OnboardingScreen() {
       // Restore status bar on both platforms
       StatusBar.setHidden(false, "fade");
       if (Platform.OS === "android") {
-        // NavigationBar.setVisibilityAsync("visible"); // Temporarily disabled
+        NavigationBar.setVisibilityAsync("visible");
       }
 
       await markOnboardingAsComplete();

@@ -1,16 +1,16 @@
 {
   "expo": {
-    "name": "001-todo-list-app",
+    "name": "Todo List App",
     "slug": "001-todo-list-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "001todolistapp",
+    "scheme": "todolistapp",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.devrafiu.x001todolistapp"
+      "bundleIdentifier": "com.devrafiu.mytodolistapp"
     },
     "android": {
       "adaptiveIcon": {
@@ -18,7 +18,7 @@
         "backgroundColor": "#000000"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.devrafiu.x001todolistapp"
+      "package": "com.devrafiu.mytodolistapp"
     },
     "web": {
       "bundler": "metro",
@@ -36,7 +36,6 @@
           "backgroundColor": ""
         }
       ],
-      "expo-secure-store",
       "@react-native-community/datetimepicker",
       "expo-navigation-bar"
     ],
