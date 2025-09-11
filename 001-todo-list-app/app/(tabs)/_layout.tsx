@@ -1,6 +1,7 @@
 import { Tabs } from "expo-router";
 import React, { useEffect } from "react";
 import { Animated, Pressable, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import StickyHeader from "@/src/components/StickyHeader";
 import { IconSymbol } from "@/src/components/ui/IconSymbol";
@@ -11,6 +12,7 @@ type TabIconProps = {
   focused: boolean;
   label: string;
 };
+
 const TabIcon = ({ name, color, focused, label }: TabIconProps) => {
   const animatedValue = React.useRef(
     new Animated.Value(focused ? 1 : 0)
@@ -25,14 +27,23 @@ const TabIcon = ({ name, color, focused, label }: TabIconProps) => {
   }, [focused, animatedValue]);
 
   return (
-    <View style={{ width: 100, alignItems: "center" }}>
-      <IconSymbol size={28} name={name} color={color} />
-      <Text style={{ color: "#fff", marginTop: 2 }}>{label}</Text>
+    <View
+      style={{
+        width: 100,
+        alignItems: "center",
+        gap: 2,
+        marginTop: 12,
+      }}
+    >
+      <IconSymbol size={22} name={name} color={color} />
+      <Text style={{ color: "#fff", marginTop: 0, fontSize: 12 }}>{label}</Text>
     </View>
   );
 };
 
 export default function TabLayout() {
+  const insets = useSafeAreaInsets();
+
   return (
     <>
       <StickyHeader />
@@ -43,17 +54,18 @@ export default function TabLayout() {
           tabBarInactiveTintColor: "#fff",
           headerShown: false,
           tabBarStyle: {
-            backgroundColor: "transparent",
+            backgroundColor: "#05243E",
             borderTopWidth: 0,
             position: "absolute",
             elevation: 0,
             shadowOpacity: 0,
+            height: 80 + insets.bottom,
           },
           tabBarLabelStyle: {
             display: "none",
           },
           tabBarIconStyle: {
-            marginBottom: 5,
+            marginBottom: 0,
           },
           tabBarButton: (props) => (
             <Pressable

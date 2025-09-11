@@ -1,6 +1,6 @@
-import { LinearGradient } from "expo-linear-gradient";
-import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { LinearGradient } from "expo-linear-gradient";
+import { Controller, useForm } from "react-hook-form";
 import {
   ActivityIndicator,
   Alert,
@@ -24,7 +24,7 @@ const formSchema = z.object({
   email: z.string().min(1, { message: "Email is required" }).email({
     message: "Invalid email",
   }),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  password: z.string().min(4, "Password must be at least 8 characters"),
 });
 type FormSchema = z.infer<typeof formSchema>;
 
@@ -32,8 +32,8 @@ function LoginScreen() {
   const { control, handleSubmit } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: "rafiu@gmail.com",
+      password: "0000",
     },
   });
   const onSubmit = (data: FormSchema) => {
@@ -181,7 +181,8 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    paddingTop: 50,
+    // justifyContent: "center",
   },
 
   header: {

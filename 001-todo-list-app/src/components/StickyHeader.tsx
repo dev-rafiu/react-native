@@ -39,8 +39,11 @@ const StickyHeader: React.FC<StickyHeaderProps> = ({ title }) => {
       icon: "settings-outline",
       enabled: true,
     },
+
     { id: "profile", label: "Profile", icon: "person-outline", enabled: false },
+
     { id: "help", label: "Help", icon: "help-circle-outline", enabled: false },
+
     {
       id: "about",
       label: "About",
@@ -86,7 +89,6 @@ const StickyHeader: React.FC<StickyHeaderProps> = ({ title }) => {
         </TouchableOpacity>
       </View>
 
-      {/* Dropdown Menu */}
       {isMenuVisible && (
         <>
           <Pressable

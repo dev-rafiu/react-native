@@ -6,19 +6,22 @@ import {
 } from "@react-navigation/native";
 
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Stack, usePathname } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/src/hooks/useColorScheme";
 import { QueryProvider } from "@/src/providers/QueryProvider";
+import * as NavigationBar from "expo-navigation-bar";
 import { useEffect, useState } from "react";
+import { Platform } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [appIsReady, setAppIsReady] = useState(false);
+  const pathname = usePathname();
 
   const { hasSeenOnboarding, isLoading: onboardingLoading } = useOnboarding();
 
@@ -60,6 +63,12 @@ export default function RootLayout() {
 
     prepare();
   }, []);
+
+  useEffect(() => {
+    if (Platform.OS === "android") {
+      NavigationBar.setVisibilityAsync("hidden");
+    }
+  }, [pathname]);
 
   // useEffect(() => {
   //   resetOnboarding();

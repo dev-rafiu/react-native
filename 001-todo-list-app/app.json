@@ -1,16 +1,16 @@
 {
   "expo": {
-    "name": "Todo List App",
+    "name": "TodoApp",
     "slug": "001-todo-list-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "todolistapp",
+    "scheme": "todoapp",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": false,
+    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.devrafiu.mytodolistapp"
+      "bundleIdentifier": "com.devrafiu.TodoApp"
     },
     "android": {
       "adaptiveIcon": {
@@ -18,7 +18,7 @@
         "backgroundColor": "#000000"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.devrafiu.mytodolistapp"
+      "package": "com.devrafiu.TodoApp"
     },
     "web": {
       "bundler": "metro",
@@ -32,8 +32,7 @@
         {
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
-          "resizeMode": "cover",
-          "backgroundColor": ""
+          "resizeMode": "cover"
         }
       ],
       "@react-native-community/datetimepicker",
