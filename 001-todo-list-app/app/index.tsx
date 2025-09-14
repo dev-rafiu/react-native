@@ -36,11 +36,11 @@ function App() {
           style={styles.icon}
         />
 
-        <Text style={styles.title}>
+        {/* <Text style={styles.title}>
           <Text style={styles.logo}>DO IT</Text>
         </Text>
 
-        <Text style={styles.subtitle}>Your Todo App</Text>
+        <Text style={styles.subtitle}>Your Todo App</Text> */}
 
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#fff" />

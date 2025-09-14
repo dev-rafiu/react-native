@@ -26,8 +26,8 @@ const StickyHeader: React.FC<StickyHeaderProps> = ({ title }) => {
     const currentTab = String(segments[segments.length - 1]);
     if (currentTab === "index") return "Home";
     if (currentTab === "tasks") return "Tasks";
-    if (currentTab === "calendar") return "Calendar";
-    return "Todo App";
+
+    return "Home";
   };
 
   const displayTitle = getDynamicTitle();

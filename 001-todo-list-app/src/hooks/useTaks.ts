@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export interface Task {
+export interface TaskType {
   id: string;
   title: string;
   description: string;
@@ -13,7 +13,7 @@ export interface Task {
 const TASKS_STORAGE_KEY = "@tasks";
 
 export class Task {
-  static async getTasks(): Promise<Task[]> {
+  static async getTasks(): Promise<TaskType[]> {
     try {
       const tasksJson = await AsyncStorage.getItem(TASKS_STORAGE_KEY);
       if (tasksJson) {
@@ -26,7 +26,12 @@ export class Task {
     }
   }
 
-  static async createTask(task: Task): Promise<void> {
+  static async getTask(taskId: string): Promise<TaskType | null> {
+    const tasks = await this.getTasks();
+    return tasks.find((task) => task.id === taskId) || null;
+  }
+
+  static async createTask(task: TaskType): Promise<void> {
     try {
       const tasks = await this.getTasks();
       const newTask = {
@@ -45,7 +50,7 @@ export class Task {
 
   static async updateTask(
     taskId: string,
-    updates: Partial<Task>
+    updates: Partial<TaskType>
   ): Promise<void> {
     try {
       const tasks = await this.getTasks();

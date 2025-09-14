@@ -47,7 +47,6 @@ export default function TabLayout() {
   return (
     <>
       <StickyHeader />
-
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: "#63D9F3",
@@ -59,7 +58,7 @@ export default function TabLayout() {
             position: "absolute",
             elevation: 0,
             shadowOpacity: 0,
-            height: 80 + insets.bottom,
+            height: 60 + insets.bottom,
           },
           tabBarLabelStyle: {
             display: "none",
@@ -100,21 +99,6 @@ export default function TabLayout() {
                 color={color}
                 focused={focused}
                 label="Tasks"
-              />
-            ),
-          }}
-        />
-
-        <Tabs.Screen
-          name="calendar"
-          options={{
-            title: "Calendar",
-            tabBarIcon: ({ color, focused }) => (
-              <TabIcon
-                name="calendar"
-                color={color}
-                focused={focused}
-                label="Calendar"
               />
             ),
           }}

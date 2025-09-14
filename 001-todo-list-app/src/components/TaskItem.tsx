@@ -1,17 +1,10 @@
 import { Typography } from "@/src/constants/Typography";
+import { TaskType } from "@/src/hooks/useTaks";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-type Task = {
-  id: string;
-  title: string;
-  description: string;
-  date: string;
-  time: string;
-};
-
-export default function TaskItem({ task }: { task: Task }) {
+export default function TaskItem({ task }: { task: TaskType }) {
   const handlePress = () => {
     router.push(`/task-details/${task.id}`);
   };
@@ -57,7 +50,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     paddingHorizontal: 10,
     paddingVertical: 5,
-    marginBottom: 10,
+    marginBottom: 20,
   },
 
   taskInfoContainer: {
@@ -71,14 +64,13 @@ const styles = StyleSheet.create({
 
   taskTitle: {
     ...Typography.bodyMedium,
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: "900",
     color: "#000",
   },
 
   taskDescription: {
-    fontSize: 14,
-    lineHeight: 18,
+    fontSize: 13,
     maxWidth: 150,
   },
 });

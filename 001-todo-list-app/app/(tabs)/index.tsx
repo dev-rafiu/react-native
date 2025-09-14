@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: 120, // Account for sticky header
   },
+
   title: {
     ...Typography.h1,
     color: "#fff",

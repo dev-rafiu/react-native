@@ -6,22 +6,22 @@ import {
 } from "@react-navigation/native";
 
 import { useFonts } from "expo-font";
-import { Stack, usePathname } from "expo-router";
+import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/src/hooks/useColorScheme";
 import { QueryProvider } from "@/src/providers/QueryProvider";
-import * as NavigationBar from "expo-navigation-bar";
 import { useEffect, useState } from "react";
-import { Platform } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [appIsReady, setAppIsReady] = useState(false);
-  const pathname = usePathname();
+  // const pathname = usePathname();
 
   const { hasSeenOnboarding, isLoading: onboardingLoading } = useOnboarding();
 
@@ -64,12 +64,6 @@ export default function RootLayout() {
     prepare();
   }, []);
 
-  useEffect(() => {
-    if (Platform.OS === "android") {
-      NavigationBar.setVisibilityAsync("hidden");
-    }
-  }, [pathname]);
-
   // useEffect(() => {
   //   resetOnboarding();
   // }, []);
@@ -79,28 +73,32 @@ export default function RootLayout() {
   }
 
   return (
-    <QueryProvider>
-      <SafeAreaProvider>
-        <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-        >
-          <Stack screenOptions={{ headerShown: false }}>
-            {!hasSeenOnboarding && (
-              <Stack.Screen
-                name="onboarding/index"
-                options={{ headerShown: false }}
-              />
-            )}
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <QueryProvider>
+        <SafeAreaProvider>
+          <BottomSheetModalProvider>
+            <ThemeProvider
+              value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+            >
+              <Stack screenOptions={{ headerShown: false }}>
+                {!hasSeenOnboarding && (
+                  <Stack.Screen
+                    name="onboarding/index"
+                    options={{ headerShown: false }}
+                  />
+                )}
 
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="index" options={{ headerShown: false }} />
-            <Stack.Screen name="auth" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
-          </Stack>
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen name="index" options={{ headerShown: false }} />
+                <Stack.Screen name="auth" options={{ headerShown: false }} />
+                <Stack.Screen name="+not-found" />
+              </Stack>
 
-          <StatusBar style="dark" />
-        </ThemeProvider>
-      </SafeAreaProvider>
-    </QueryProvider>
+              <StatusBar style="dark" />
+            </ThemeProvider>
+          </BottomSheetModalProvider>
+        </SafeAreaProvider>
+      </QueryProvider>
+    </GestureHandlerRootView>
   );
 }
