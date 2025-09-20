@@ -13,17 +13,16 @@ import "react-native-reanimated";
 
 import { useColorScheme } from "@/src/hooks/useColorScheme";
 import { QueryProvider } from "@/src/providers/QueryProvider";
-import { useEffect, useState } from "react";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { useEffect, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [appIsReady, setAppIsReady] = useState(false);
-  // const pathname = usePathname();
 
-  const { hasSeenOnboarding, isLoading: onboardingLoading } = useOnboarding();
+  const { hasSeenOnboarding } = useOnboarding();
 
   const [fontsLoaded] = useFonts({
     "Poppins-Thin": require("../assets/fonts/Poppins/Poppins-Thin.ttf"),
@@ -64,11 +63,7 @@ export default function RootLayout() {
     prepare();
   }, []);
 
-  // useEffect(() => {
-  //   resetOnboarding();
-  // }, []);
-
-  if (!appIsReady || !fontsLoaded || onboardingLoading) {
+  if (!appIsReady || !fontsLoaded) {
     return null;
   }
 

@@ -5,7 +5,8 @@ import { Typography } from "@/src/constants/Typography";
 import { Task, TaskType } from "@/src/hooks/useTaks";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { useEffect, useState } from "react";
+import { useFocusEffect, useLocalSearchParams } from "expo-router";
+import { useCallback, useEffect, useState } from "react";
 
 import {
   FlatList,
@@ -41,6 +42,7 @@ const sortOptions: SortOption[] = [
 
 export default function TaskScreen() {
   const insets = useSafeAreaInsets();
+  const { refresh } = useLocalSearchParams<{ refresh?: string }>();
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [selectedSort, setSelectedSort] = useState<SortOption | null>(null);
   const [tasks, setTasks] = useState<TaskType[]>([]);
@@ -67,6 +69,15 @@ export default function TaskScreen() {
 
     loadTasks();
   }, []);
+
+  // Refresh tasks when coming back from task details after deletion
+  useFocusEffect(
+    useCallback(() => {
+      if (refresh === "true") {
+        handleLoadTasks();
+      }
+    }, [refresh])
+  );
 
   const handleSortSelect = (option: SortOption) => {
     setSelectedSort(option);
@@ -139,8 +150,8 @@ export default function TaskScreen() {
               data={tasks}
               renderItem={({ item }) => <TaskItem task={item as TaskType} />}
               keyExtractor={(item) => item.id.toString()}
-              scrollEnabled={true}
-              nestedScrollEnabled={true}
+              // nestedScrollEnabled={true}
+              showsVerticalScrollIndicator={false}
               contentContainerStyle={{ paddingBottom: 20 + insets.bottom }}
               ListEmptyComponent={() => (
                 <Text style={styles.emptyText}>No tasks found</Text>

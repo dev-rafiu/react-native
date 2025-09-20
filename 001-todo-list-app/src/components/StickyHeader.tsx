@@ -152,6 +152,7 @@ const styles = StyleSheet.create({
     ...Typography.bodyMedium,
     color: "#fff",
     fontWeight: "600",
+    fontSize: 16,
   },
 
   menuButton: {

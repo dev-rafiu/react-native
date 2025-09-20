@@ -7,7 +7,7 @@ export const useOnboarding = () => {
   const [hasSeenOnboarding, setHasSeenOnboarding] = useState<boolean | null>(
     null
   );
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
   const checkOnboardingStatus = async () => {
     try {
@@ -17,7 +17,7 @@ export const useOnboarding = () => {
       console.error("Error reading onboarding status:", error);
       setHasSeenOnboarding(false);
     } finally {
-      setIsLoading(false);
+      // setIsLoading(false);
     }
   };
 
@@ -36,7 +36,7 @@ export const useOnboarding = () => {
 
   return {
     hasSeenOnboarding,
-    isLoading,
+    // isLoading,
     markOnboardingAsComplete,
   };
 };

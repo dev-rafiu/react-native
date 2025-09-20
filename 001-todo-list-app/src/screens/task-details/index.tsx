@@ -1,14 +1,15 @@
+import NavigationHeader from "@/src/components/NavigationHeader";
 import { Task, TaskType } from "@/src/hooks/useTaks";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { useLocalSearchParams, useNavigation } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { useCallback, useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function TaskDetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const navigation = useNavigation();
   const [task, setTask] = useState<TaskType | null>(null);
 
   const handleLoadTask = useCallback(async () => {
@@ -17,73 +18,128 @@ export default function TaskDetailsScreen() {
     setTask(taskDetails);
   }, [id]);
 
+  const handleDeleteTask = useCallback(async () => {
+    if (!id) return;
+    await Task.deleteTask(id);
+    router.replace("/(tabs)/tasks?refresh=true");
+  }, [id]);
+
+  const handleMarkTaskAsDone = useCallback(async () => {
+    if (!id) return;
+    await Task.markTaskAsDone(id);
+    await handleLoadTask();
+  }, [id, handleLoadTask]);
+
+  const showDeleteConfirmation = useCallback(() => {
+    Alert.alert(
+      "Delete Task",
+      "Are you sure you want to delete this task? This action cannot be undone.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: handleDeleteTask,
+        },
+      ],
+      {
+        cancelable: true,
+      }
+    );
+  }, [handleDeleteTask]);
+
   useEffect(() => {
     handleLoadTask();
   }, [handleLoadTask]);
 
   return (
-    <LinearGradient
-      colors={["#1253AA", "#082D52", "#05243E"]}
-      style={styles.container}
-    >
-      <SafeAreaView>
-        <View style={styles.headerContainer}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Ionicons
-              name="chevron-back"
-              size={24}
-              style={styles.backButtonIcon}
-            />
-          </TouchableOpacity>
-        </View>
+    <>
+      <StatusBar style="light" translucent={false} />
 
-        {!task ? (
-          <Text style={styles.notFoundText}>Task not found</Text>
-        ) : (
-          <View style={styles.taskDetailsContainer}>
-            <Text style={styles.taskTitle}>{task.title}</Text>
-            <Text style={styles.taskDescription}>{task.description}</Text>
-            <View style={styles.taskMetaContainer}>
-              <View style={styles.metaItem}>
-                <Ionicons name="calendar-outline" size={20} color="#fff" />
-                <Text style={styles.metaText}>
-                  {new Date(task.date).toLocaleDateString("en-US", {
-                    weekday: "long",
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </Text>
-              </View>
-              <View style={styles.metaItem}>
-                <Ionicons name="time-outline" size={20} color="#fff" />
-                <Text style={styles.metaText}>
-                  {new Date(task.time).toLocaleTimeString("en-US", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </Text>
-              </View>
+      <LinearGradient
+        colors={["#1253AA", "#082D52", "#05243E"]}
+        style={styles.container}
+      >
+        <SafeAreaView>
+          <NavigationHeader title="Task Details" />
 
-              {task.completed !== undefined && (
+          {!task ? (
+            <Text style={styles.notFoundText}>Task not found</Text>
+          ) : (
+            <View style={styles.taskDetailsContainer}>
+              <Text style={styles.taskTitle}>{task.title}</Text>
+              <Text style={styles.taskDescription}>{task.description}</Text>
+
+              <View style={styles.taskMetaContainer}>
                 <View style={styles.metaItem}>
-                  <Ionicons
-                    name={
-                      task.completed ? "checkmark-circle" : "ellipse-outline"
-                    }
-                    size={20}
-                    color={task.completed ? "#4CAF50" : "#fff"}
-                  />
+                  <Ionicons name="calendar-outline" size={20} color="#fff" />
                   <Text style={styles.metaText}>
-                    {task.completed ? "Completed" : "Pending"}
+                    {new Date(task.date).toLocaleDateString("en-US", {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
                   </Text>
                 </View>
-              )}
+
+                <View style={styles.metaItem}>
+                  <Ionicons name="time-outline" size={20} color="#fff" />
+                  <Text style={styles.metaText}>
+                    {new Date(task.time).toLocaleTimeString("en-US", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </Text>
+                </View>
+
+                {task.completed !== undefined && (
+                  <View style={styles.metaItem}>
+                    <Ionicons
+                      name={
+                        task.completed ? "checkmark-circle" : "ellipse-outline"
+                      }
+                      size={20}
+                      color={task.completed ? "#4CAF50" : "#fff"}
+                    />
+                    <Text style={styles.metaText}>
+                      {task.completed ? "Completed" : "Pending"}
+                    </Text>
+                  </View>
+                )}
+              </View>
+
+              {/* action buttons */}
+              <View style={styles.actionButtonsContainer}>
+                <Pressable
+                  style={styles.actionButton}
+                  onPress={handleMarkTaskAsDone}
+                >
+                  <Ionicons name="checkmark-circle" size={24} color="#4CAF50" />
+                  <Text style={styles.actionButtonText}>Done</Text>
+                </Pressable>
+
+                <Pressable
+                  style={styles.actionButton}
+                  onPress={showDeleteConfirmation}
+                >
+                  <Ionicons name="trash-outline" size={24} color="#FF6B6B" />
+                  <Text style={styles.actionButtonText}>Delete</Text>
+                </Pressable>
+
+                <Pressable style={styles.actionButton}>
+                  <Ionicons name="bookmark" size={24} color="#FFA726" />
+                  <Text style={styles.actionButtonText}>Pin</Text>
+                </Pressable>
+              </View>
             </View>
-          </View>
-        )}
-      </SafeAreaView>
-    </LinearGradient>
+          )}
+        </SafeAreaView>
+      </LinearGradient>
+    </>
   );
 }
 
@@ -93,41 +149,10 @@ const styles = StyleSheet.create({
     padding: 20,
   },
 
-  headerContainer: {
-    paddingVertical: 20,
-    width: "60%",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-
-  backButton: {
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 50,
-    width: 35,
-    height: 35,
-  },
-
-  backButtonIcon: {
-    color: "#fff",
-  },
-
-  screenLabel: {
-    color: "#FFFFFF",
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-
   loadingText: {
     color: "#fff",
     fontSize: 16,
     textAlign: "center",
-    marginTop: 50,
-  },
-
-  errorContainer: {
-    alignItems: "center",
     marginTop: 50,
   },
 
@@ -192,5 +217,30 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
     marginTop: 50,
+  },
+
+  actionButtonsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginTop: 30,
+    paddingTop: 20,
+    borderTopWidth: 1,
+    borderTopColor: "rgba(255, 255, 255, 0.2)",
+  },
+
+  actionButton: {
+    alignItems: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    minWidth: 80,
+  },
+
+  actionButtonText: {
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "600",
+    marginTop: 6,
   },
 });

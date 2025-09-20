@@ -63,7 +63,6 @@ function OnboardingScreen() {
     if (currentIndex < ONBOARDING_SLIDES.length - 1) {
       slideRef?.current?.scrollToIndex({ index: currentIndex + 1 });
     } else {
-      // Restore status bar on both platforms
       StatusBar.setHidden(false, "fade");
       if (Platform.OS === "android") {
         NavigationBar.setVisibilityAsync("visible");

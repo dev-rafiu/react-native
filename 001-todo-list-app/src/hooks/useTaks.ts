@@ -1,5 +1,4 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 export interface TaskType {
   id: string;
   title: string;
@@ -84,6 +83,20 @@ export class Task {
       await AsyncStorage.removeItem(TASKS_STORAGE_KEY);
     } catch (error) {
       console.error("Error clearing tasks:", error);
+      throw error;
+    }
+  }
+
+  static async markTaskAsDone(taskId: string): Promise<void> {
+    try {
+      const tasks = await this.getTasks();
+      const taskIndex = tasks.findIndex((task) => task.id === taskId);
+      if (taskIndex !== -1) {
+        tasks[taskIndex].completed = true;
+        await AsyncStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(tasks));
+      }
+    } catch (error) {
+      console.error("Error marking task as done:", error);
       throw error;
     }
   }

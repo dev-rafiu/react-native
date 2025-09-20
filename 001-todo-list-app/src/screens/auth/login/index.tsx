@@ -13,8 +13,9 @@ import {
 } from "react-native";
 
 import { Typography } from "@/src/constants/Typography";
-import { useSimulateAuth } from "@/src/hooks/useAuth";
+import { setLoggedIn, useLogin } from "@/src/hooks/useAuth";
 import { AntDesign } from "@expo/vector-icons";
+import { useQueryClient } from "@tanstack/react-query";
 import { Link, router } from "expo-router";
 import { useState } from "react";
 
@@ -29,6 +30,7 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 function LoginScreen() {
+  const queryClient = useQueryClient();
   const { control, handleSubmit } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -42,8 +44,10 @@ function LoginScreen() {
       return;
     }
 
-    simulateAuthMutation.mutate(undefined, {
-      onSuccess: () => {
+    loginMutation.mutate(undefined, {
+      onSuccess: async () => {
+        await setLoggedIn();
+        queryClient.invalidateQueries({ queryKey: ["auth"] });
         router.replace("/(tabs)");
       },
     });
@@ -51,7 +55,7 @@ function LoginScreen() {
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const simulateAuthMutation = useSimulateAuth();
+  const loginMutation = useLogin();
 
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
@@ -63,7 +67,7 @@ function LoginScreen() {
       style={styles.container}
     >
       {/* header */}
-      <View style={styles.header}>
+      <View>
         <AntDesign
           name="checkcircle"
           size={60}
@@ -154,7 +158,7 @@ function LoginScreen() {
       <View style={styles.buttonContainer}>
         <Pressable style={styles.button} onPress={handleSubmit(onSubmit)}>
           <Text style={styles.buttonText}>
-            {simulateAuthMutation.isPending ? (
+            {loginMutation.isPending ? (
               <ActivityIndicator size="small" color="#fff" />
             ) : (
               "Sign in"
@@ -181,13 +185,8 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50,
-    // justifyContent: "center",
-  },
-
-  header: {
+    paddingTop: 80,
     paddingHorizontal: 20,
-    marginBottom: 20,
   },
 
   icon: {
@@ -215,7 +214,6 @@ const styles = StyleSheet.create({
   form: {
     width: "100%",
     marginVertical: 20,
-    paddingHorizontal: 20,
     gap: 15,
   },
 
@@ -256,7 +254,6 @@ const styles = StyleSheet.create({
 
   buttonContainer: {
     width: "100%",
-    paddingHorizontal: 20,
   },
 
   footer: {
@@ -282,6 +279,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 10,
     marginTop: 10,
+    width: "100%",
   },
 
   buttonText: {
