@@ -31,13 +31,10 @@ type SortOption = {
 };
 
 const sortOptions: SortOption[] = [
-  { id: "date-asc", label: "Date (Oldest First)", icon: "calendar-outline" },
-  { id: "date-desc", label: "Date (Newest First)", icon: "calendar" },
-  { id: "priority-high", label: "Priority (High to Low)", icon: "flag" },
-  { id: "priority-low", label: "Priority (Low to High)", icon: "flag-outline" },
-  { id: "name-asc", label: "Name (A-Z)", icon: "text" },
-  { id: "name-desc", label: "Name (Z-A)", icon: "text-outline" },
-  { id: "status", label: "Status", icon: "checkmark-circle" },
+  { id: "all", label: "All", icon: "list" },
+  { id: "pending", label: "Pending", icon: "ellipse-outline" },
+  { id: "completed", label: "Completed", icon: "checkmark-circle" },
+  { id: "pinned", label: "Pinned", icon: "bookmark" },
 ];
 
 export default function TaskScreen() {
@@ -70,7 +67,6 @@ export default function TaskScreen() {
     loadTasks();
   }, []);
 
-  // Refresh tasks when coming back from task details after deletion
   useFocusEffect(
     useCallback(() => {
       if (refresh === "true") {
@@ -194,18 +190,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
 
-  clearAllButton: {
-    width: 120,
-    marginLeft: "auto",
-    padding: 10,
-    marginBottom: 20,
-  },
-
-  clearAllButtonText: {
-    textAlign: "right",
-    color: "#fff",
-  },
-
   safeArea: {
     flex: 1,
   },
@@ -232,6 +216,15 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
 
+  searchIcon: {
+    position: "absolute",
+    right: 12,
+    top: 0,
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
   sortButton: {
     flexDirection: "row",
     alignItems: "center",
@@ -249,6 +242,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 
+  clearAllButton: {
+    width: 120,
+    marginLeft: "auto",
+    padding: 10,
+    marginBottom: 20,
+  },
+
+  clearAllButtonText: {
+    textAlign: "right",
+    color: "#fff",
+  },
+
   tasksContainer: {
     flex: 1,
     marginTop: 20,
@@ -263,29 +268,17 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
 
-  searchIcon: {
-    position: "absolute",
-    right: 12,
-    top: 0,
-    bottom: 0,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
   modalOverlay: {
-    flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    justifyContent: "flex-start",
     alignItems: "flex-end",
     paddingTop: 100,
-    paddingRight: 10,
+    paddingRight: 20,
   },
 
   dropdownContainer: {
     backgroundColor: "#102D53",
     borderRadius: 8,
-    maxHeight: 300,
-    minWidth: 250,
+    maxHeight: 200,
+    minWidth: 200,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

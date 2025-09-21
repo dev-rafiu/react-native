@@ -2,10 +2,10 @@ import { useState } from "react";
 import {
   Text,
   StyleSheet,
-  TouchableOpacity,
   TextInput,
   View,
   Platform,
+  Pressable,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
@@ -103,7 +103,6 @@ const CreateTaskForm = ({ onDismiss, onTaskCreated }: Props) => {
         />
       </View>
 
-      {/* description input */}
       <View style={styles.descriptionContainer}>
         <Ionicons
           name="menu-outline"
@@ -122,43 +121,43 @@ const CreateTaskForm = ({ onDismiss, onTaskCreated }: Props) => {
         />
       </View>
 
-      {/* date and time selectors */}
       <View style={styles.dateTimeContainer}>
-        <TouchableOpacity
-          style={styles.dateTimeButton}
-          onPress={() => setShowDatePicker(true)}
+        <Pressable
+          onPress={() => {
+            setShowTimePicker(false);
+            setShowDatePicker(true);
+          }}
+          style={({ pressed }) => [
+            styles.dateTimeButton,
+            pressed && styles.dateTimeButtonPressed,
+          ]}
         >
           <Ionicons name="calendar-outline" size={20} color="#666" />
           <Text style={styles.dateTimeText}>{formatDate(newTask.date)}</Text>
-        </TouchableOpacity>
+        </Pressable>
 
-        <TouchableOpacity
+        <Pressable
+          onPress={() => {
+            setShowDatePicker(false);
+            setShowTimePicker(true);
+          }}
           style={styles.dateTimeButton}
-          onPress={() => setShowTimePicker(true)}
         >
           <Ionicons name="time-outline" size={20} color="#666" />
           <Text style={styles.dateTimeText}>{formatTime(newTask.time)}</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
 
-      {/* action buttons */}
       <View style={styles.actionButtons}>
-        <TouchableOpacity
-          style={styles.cancelButton}
-          onPress={handleResetNewTask}
-        >
-          <Text style={styles.cancelButtonText}>cancel</Text>
-        </TouchableOpacity>
+        <Pressable style={styles.cancelButton} onPress={handleResetNewTask}>
+          <Text style={styles.cancelButtonText}>Cancel</Text>
+        </Pressable>
 
-        <TouchableOpacity
-          style={styles.createButton}
-          onPress={handleCreateTask}
-        >
-          <Text style={styles.createButtonText}>create</Text>
-        </TouchableOpacity>
+        <Pressable style={styles.createButton} onPress={handleCreateTask}>
+          <Text style={styles.createButtonText}>Create</Text>
+        </Pressable>
       </View>
 
-      {/* date/time pickers */}
       {showDatePicker && (
         <DateTimePicker
           value={newTask.date}
@@ -287,6 +286,10 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 8,
     gap: 8,
+  },
+
+  dateTimeButtonPressed: {
+    opacity: 0.7,
   },
 
   dateTimeText: {
