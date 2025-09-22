@@ -1,4 +1,3 @@
-import { useOnboarding } from "@/src/hooks/useOnboarding";
 import {
   DarkTheme,
   DefaultTheme,
@@ -21,8 +20,6 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [appIsReady, setAppIsReady] = useState(false);
-
-  const { hasSeenOnboarding } = useOnboarding();
 
   const [fontsLoaded] = useFonts({
     "Poppins-Thin": require("../assets/fonts/Poppins/Poppins-Thin.ttf"),
@@ -76,13 +73,10 @@ export default function RootLayout() {
               value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
             >
               <Stack screenOptions={{ headerShown: false }}>
-                {!hasSeenOnboarding && (
-                  <Stack.Screen
-                    name="onboarding/index"
-                    options={{ headerShown: false }}
-                  />
-                )}
-
+                <Stack.Screen
+                  name="onboarding/index"
+                  options={{ headerShown: false }}
+                />
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                 <Stack.Screen name="index" options={{ headerShown: false }} />
                 <Stack.Screen name="auth" options={{ headerShown: false }} />

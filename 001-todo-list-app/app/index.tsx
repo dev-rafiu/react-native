@@ -1,14 +1,32 @@
 import { useCheckAuth } from "@/src/hooks/useAuth";
-import { useOnboarding } from "@/src/hooks/useOnboarding";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+const ONBOARDING_KEY = "hasSeenOnboarding";
 
 function App() {
-  const { hasSeenOnboarding } = useOnboarding();
+  const [hasSeenOnboarding, setHasSeenOnboarding] = useState<boolean | null>(
+    null
+  );
   const { data: isLoggedIn, isLoading: authLoading } = useCheckAuth();
 
   useEffect(() => {
-    if (authLoading) return;
+    const checkOnboardingStatus = async () => {
+      try {
+        const value = await AsyncStorage.getItem(ONBOARDING_KEY);
+        setHasSeenOnboarding(value === "true");
+      } catch (error) {
+        console.error("Error reading onboarding status:", error);
+        setHasSeenOnboarding(false);
+      }
+    };
+
+    checkOnboardingStatus();
+  }, []);
+
+  useEffect(() => {
+    if (authLoading || hasSeenOnboarding === null) return;
 
     if (isLoggedIn && hasSeenOnboarding) {
       router.replace("/(tabs)");
@@ -17,7 +35,7 @@ function App() {
     }
   }, [hasSeenOnboarding, isLoggedIn, authLoading]);
 
-  return;
+  return null;
 }
 
 export default App;
