@@ -3,7 +3,6 @@ import { Task, TaskType } from "@/src/hooks/useTaks";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { router, useLocalSearchParams } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 import { useCallback, useEffect, useState } from "react";
 import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -56,90 +55,86 @@ export default function TaskDetailsScreen() {
   }, [handleLoadTask]);
 
   return (
-    <>
-      <StatusBar style="light" translucent={false} />
+    <LinearGradient
+      colors={["#1253AA", "#082D52", "#05243E"]}
+      style={styles.container}
+    >
+      <SafeAreaView>
+        <NavigationHeader title="Task Details" />
 
-      <LinearGradient
-        colors={["#1253AA", "#082D52", "#05243E"]}
-        style={styles.container}
-      >
-        <SafeAreaView>
-          <NavigationHeader title="Task Details" />
+        {!task ? (
+          <Text style={styles.notFoundText}>Task not found</Text>
+        ) : (
+          <View style={styles.taskDetailsContainer}>
+            <Text style={styles.taskTitle}>{task.title}</Text>
+            <Text style={styles.taskDescription}>{task.description}</Text>
 
-          {!task ? (
-            <Text style={styles.notFoundText}>Task not found</Text>
-          ) : (
-            <View style={styles.taskDetailsContainer}>
-              <Text style={styles.taskTitle}>{task.title}</Text>
-              <Text style={styles.taskDescription}>{task.description}</Text>
-
-              <View style={styles.taskMetaContainer}>
-                <View style={styles.metaItem}>
-                  <Ionicons name="calendar-outline" size={20} color="#fff" />
-                  <Text style={styles.metaText}>
-                    {new Date(task.date).toLocaleDateString("en-US", {
-                      weekday: "long",
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </Text>
-                </View>
-
-                <View style={styles.metaItem}>
-                  <Ionicons name="time-outline" size={20} color="#fff" />
-                  <Text style={styles.metaText}>
-                    {new Date(task.time).toLocaleTimeString("en-US", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </Text>
-                </View>
-
-                {task.completed !== undefined && (
-                  <View style={styles.metaItem}>
-                    <Ionicons
-                      name={
-                        task.completed ? "checkmark-circle" : "ellipse-outline"
-                      }
-                      size={20}
-                      color={task.completed ? "#4CAF50" : "#fff"}
-                    />
-                    <Text style={styles.metaText}>
-                      {task.completed ? "Completed" : "Pending"}
-                    </Text>
-                  </View>
-                )}
+            <View style={styles.taskMetaContainer}>
+              <View style={styles.metaItem}>
+                <Ionicons name="calendar-outline" size={20} color="#fff" />
+                <Text style={styles.metaText}>
+                  {new Date(task.date).toLocaleDateString("en-US", {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </Text>
               </View>
 
-              {/* action buttons */}
-              <View style={styles.actionButtonsContainer}>
-                <Pressable
-                  style={styles.actionButton}
-                  onPress={handleMarkTaskAsDone}
-                >
-                  <Ionicons name="checkmark-circle" size={24} color="#4CAF50" />
-                  <Text style={styles.actionButtonText}>Done</Text>
-                </Pressable>
-
-                <Pressable
-                  style={styles.actionButton}
-                  onPress={showDeleteConfirmation}
-                >
-                  <Ionicons name="trash-outline" size={24} color="#FF6B6B" />
-                  <Text style={styles.actionButtonText}>Delete</Text>
-                </Pressable>
-
-                <Pressable style={styles.actionButton}>
-                  <Ionicons name="bookmark" size={24} color="#FFA726" />
-                  <Text style={styles.actionButtonText}>Pin</Text>
-                </Pressable>
+              <View style={styles.metaItem}>
+                <Ionicons name="time-outline" size={20} color="#fff" />
+                <Text style={styles.metaText}>
+                  {new Date(task.time).toLocaleTimeString("en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </Text>
               </View>
+
+              {task.completed !== undefined && (
+                <View style={styles.metaItem}>
+                  <Ionicons
+                    name={
+                      task.completed ? "checkmark-circle" : "ellipse-outline"
+                    }
+                    size={20}
+                    color={task.completed ? "#4CAF50" : "#fff"}
+                  />
+                  <Text style={styles.metaText}>
+                    {task.completed ? "Completed" : "Pending"}
+                  </Text>
+                </View>
+              )}
             </View>
-          )}
-        </SafeAreaView>
-      </LinearGradient>
-    </>
+
+            {/* action buttons */}
+            <View style={styles.actionButtonsContainer}>
+              <Pressable
+                style={styles.actionButton}
+                onPress={handleMarkTaskAsDone}
+              >
+                <Ionicons name="checkmark-circle" size={24} color="#4CAF50" />
+                <Text style={styles.actionButtonText}>Done</Text>
+              </Pressable>
+
+              <Pressable
+                style={styles.actionButton}
+                onPress={showDeleteConfirmation}
+              >
+                <Ionicons name="trash-outline" size={24} color="#FF6B6B" />
+                <Text style={styles.actionButtonText}>Delete</Text>
+              </Pressable>
+
+              <Pressable style={styles.actionButton}>
+                <Ionicons name="bookmark" size={24} color="#FFA726" />
+                <Text style={styles.actionButtonText}>Pin</Text>
+              </Pressable>
+            </View>
+          </View>
+        )}
+      </SafeAreaView>
+    </LinearGradient>
   );
 }
 

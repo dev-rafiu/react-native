@@ -38,11 +38,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     marginTop: 100,
-    gap: 40,
+    gap: 20,
   },
 
   image: {
-    width: 230,
+    width: 300,
     height: 300,
     marginHorizontal: "auto",
     objectFit: "contain",

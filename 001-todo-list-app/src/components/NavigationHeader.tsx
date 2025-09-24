@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 interface NavigationHeaderProps {
   title?: string;
@@ -28,17 +28,15 @@ export default function NavigationHeader({
   return (
     <View style={[styles.container]}>
       <View style={styles.content}>
-        <View style={styles.leftSection}>
-          {showBackButton && (
-            <TouchableOpacity
-              onPress={handleBackPress}
-              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-            >
-              <Ionicons name="chevron-back" size={24} color="#fff" />
-            </TouchableOpacity>
-          )}
-          {title && <Text style={styles.title}>{title}</Text>}
-        </View>
+        {showBackButton && (
+          <Pressable
+            onPress={handleBackPress}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <Ionicons name="chevron-back" size={24} color="#fff" />
+          </Pressable>
+        )}
+        {title && <Text style={styles.title}>{title}</Text>}
       </View>
     </View>
   );
@@ -46,15 +44,10 @@ export default function NavigationHeader({
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 20,
+    marginBottom: 20,
   },
 
   content: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-
-  leftSection: {
     flexDirection: "row",
     alignItems: "center",
     gap: 10,

@@ -1,5 +1,5 @@
 import { AntDesign } from "@expo/vector-icons";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 
 type Props = {
   scrollTo: () => void;
@@ -8,13 +8,13 @@ type Props = {
 function NextButton({ scrollTo, isLastScreen }: Props) {
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={scrollTo} style={styles.button}>
+      <Pressable onPress={scrollTo} style={styles.button}>
         {isLastScreen ? (
           <AntDesign name="check" size={32} color={"#000"} />
         ) : (
-          <AntDesign name="arrowright" size={32} color={"#000"} />
+          <AntDesign name="arrow-right" size={32} color={"#000"} />
         )}
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 }

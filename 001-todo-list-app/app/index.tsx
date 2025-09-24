@@ -3,6 +3,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
 
+import "../global.css";
+
 const ONBOARDING_KEY = "hasSeenOnboarding";
 
 function App() {
