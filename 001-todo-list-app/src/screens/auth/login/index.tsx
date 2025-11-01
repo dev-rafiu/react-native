@@ -18,10 +18,12 @@ import { setLoggedIn, useLogin } from "@/src/hooks/useAuth";
 import { AntDesign } from "@expo/vector-icons";
 import { useQueryClient } from "@tanstack/react-query";
 import { Link, router } from "expo-router";
+import { Logo } from "@/src/components/Logo";
 
 import { z } from "zod";
 
 const formSchema = z.object({
+  fullName: z.string().min(1, { message: "Full Name is required" }),
   email: z.string().min(1, { message: "Email is required" }).email({
     message: "Invalid email",
   }),
@@ -30,10 +32,14 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 function LoginScreen() {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const queryClient = useQueryClient();
+  const loginMutation = useLogin();
+
   const { control, handleSubmit } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      fullName: "Rafiu",
       email: "rafiu@gmail.com",
       password: "0000",
     },
@@ -54,10 +60,6 @@ function LoginScreen() {
     });
   };
 
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
-  const loginMutation = useLogin();
-
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
@@ -77,10 +79,10 @@ function LoginScreen() {
         />
 
         <Text style={styles.title}>
-          Welcome back to <Text style={styles.logo}>DO IT</Text>
+          Welcome back to <Logo />
         </Text>
 
-        <Text style={styles.subtitle}>Have an other productive day !</Text>
+        <Text style={styles.subtitle}>Have another productive day!</Text>
       </View>
 
       {/* form  fields */}
@@ -205,11 +207,6 @@ const styles = StyleSheet.create({
 
   subtitle: {
     ...Typography.bodyMedium,
-    color: "#fff",
-  },
-
-  logo: {
-    ...Typography.h1,
     color: "#fff",
   },
 

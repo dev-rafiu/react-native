@@ -5,6 +5,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link, router } from "expo-router";
+import { Logo } from "@/src/components/Logo";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
@@ -75,9 +76,9 @@ function SignupScreen() {
           style={styles.icon}
         />
         <Text style={styles.title}>
-          Welcome to <Text style={styles.logo}>DO IT</Text>
+          Welcome to <Logo />
         </Text>
-        <Text style={styles.subtitle}>create an account and Join us now!</Text>
+        <Text style={styles.subtitle}>create an account and join us now!</Text>
       </View>
 
       {/* form  fields */}
@@ -191,7 +192,7 @@ export default SignupScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    paddingTop: 80,
   },
 
   header: {
@@ -213,11 +214,6 @@ const styles = StyleSheet.create({
 
   subtitle: {
     ...Typography.bodyMedium,
-    color: "#fff",
-  },
-
-  logo: {
-    ...Typography.h1,
     color: "#fff",
   },
 
