@@ -1,12 +1,12 @@
 import { Animated, StyleSheet, useWindowDimensions, View } from "react-native";
-import { TItem } from "./OnboardingItem";
+import { TSlide } from "../definitions";
 
 type TProps = {
-  data: TItem[];
+  data: TSlide[];
   scrollX: Animated.Value;
 };
 
-function Paginator({ data, scrollX }: TProps) {
+function PaginationinIndicator({ data, scrollX }: TProps) {
   const { width } = useWindowDimensions();
 
   return (
@@ -43,7 +43,7 @@ function Paginator({ data, scrollX }: TProps) {
   );
 }
 
-export default Paginator;
+export default PaginationinIndicator;
 
 const styles = StyleSheet.create({
   container: {

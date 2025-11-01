@@ -1,10 +1,3 @@
-import NextButton from "@/src/components/NextButton";
-import OnboardingItem from "@/src/components/OnboardingItem";
-import Paginator from "@/src/components/Paginator";
-import { useOnboarding } from "@/src/hooks/useOnboarding";
-import { ONBOARDING_SLIDES } from "@/src/utils/slides";
-import * as NavigationBar from "expo-navigation-bar";
-import { router } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import {
   Animated,
@@ -16,19 +9,21 @@ import {
   View,
   ViewToken,
 } from "react-native";
+import { useOnboarding } from "@/src/hooks/useOnboarding";
+import { ONBOARDING_SLIDES } from "@/src/utils/slides";
+import * as NavigationBar from "expo-navigation-bar";
+import { router } from "expo-router";
+import NextButton from "@/src/components/NextButton";
+import OnboardingSlide from "@/src/components/OnboardingSlide";
+import PaginationinIndicator from "@/src/components/PaginationIndicator";
 
 import * as SystemUI from "expo-system-ui";
-
-interface Slides {
-  id: number;
-  icon: any;
-  text: string;
-}
+import { TSlide } from "@/src/definitions";
 
 function OnboardingScreen() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollX = useRef(new Animated.Value(0)).current;
-  const slideRef = useRef<FlatList<Slides>>(null);
+  const slideRef = useRef<FlatList<TSlide>>(null);
   const { markOnboardingAsComplete } = useOnboarding();
 
   const { height: screenHeight } = Dimensions.get("screen");
@@ -75,30 +70,28 @@ function OnboardingScreen() {
 
   return (
     <View style={[styles.container, { height: screenHeight }]}>
-      <View style={styles.flatListContainer}>
-        <FlatList
-          ref={slideRef}
-          data={ONBOARDING_SLIDES}
-          renderItem={({ item }) => <OnboardingItem item={item} />}
-          keyExtractor={(item) => item.id.toString()}
-          horizontal
-          bounces={false}
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          scrollEventThrottle={32}
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-            {
-              useNativeDriver: false,
-            }
-          )}
-          onViewableItemsChanged={viewableItemsChanged}
-          viewabilityConfig={viewConfig}
-        />
-      </View>
+      <FlatList
+        ref={slideRef}
+        keyExtractor={(item) => item.id.toString()}
+        data={ONBOARDING_SLIDES}
+        renderItem={({ item }) => <OnboardingSlide item={item} />}
+        horizontal
+        bounces={false}
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        scrollEventThrottle={32}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+          {
+            useNativeDriver: false,
+          }
+        )}
+        onViewableItemsChanged={viewableItemsChanged}
+        viewabilityConfig={viewConfig}
+      />
 
       <View style={styles.paginationContainer}>
-        <Paginator data={ONBOARDING_SLIDES} scrollX={scrollX} />
+        <PaginationinIndicator data={ONBOARDING_SLIDES} scrollX={scrollX} />
         <NextButton
           scrollTo={scrollTo}
           isLastScreen={currentIndex === ONBOARDING_SLIDES.length - 1}
@@ -115,9 +108,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  flatListContainer: {
-    flex: 1,
-  },
+  // flatListContainer: {
+  //   flex: 1,
+  // },
 
   paginationContainer: {
     position: "absolute",

@@ -1,13 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
-
-const ONBOARDING_KEY = "hasSeenOnboarding";
+import { ONBOARDING_KEY } from "../utils";
 
 export const useOnboarding = () => {
   const [hasSeenOnboarding, setHasSeenOnboarding] = useState<boolean | null>(
     null
   );
-  // const [isLoading, setIsLoading] = useState(true);
 
   const checkOnboardingStatus = async () => {
     try {
@@ -17,7 +15,6 @@ export const useOnboarding = () => {
       console.error("Error reading onboarding status:", error);
       setHasSeenOnboarding(false);
     } finally {
-      // setIsLoading(false);
     }
   };
 
@@ -36,7 +33,6 @@ export const useOnboarding = () => {
 
   return {
     hasSeenOnboarding,
-    // isLoading,
     markOnboardingAsComplete,
   };
 };

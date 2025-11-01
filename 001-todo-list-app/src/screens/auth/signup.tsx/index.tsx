@@ -1,5 +1,6 @@
 import { Typography } from "@/src/constants/Typography";
-import { useSimulateAuth } from "@/src/hooks/useAuth";
+// import { useSimulateAuth } from "@/src/hooks/useAuth";
+import { useLogin } from "@/src/hooks/useAuth";
 import { AntDesign } from "@expo/vector-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LinearGradient } from "expo-linear-gradient";
@@ -31,7 +32,8 @@ type FormSchema = z.infer<typeof formSchema>;
 function SignupScreen() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const simulateAuthMutation = useSimulateAuth();
+  // const simulateAuthMutation = useSimulateAuth();
+  const signUpMutation = useLogin();
 
   const { control, handleSubmit } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -48,7 +50,7 @@ function SignupScreen() {
       return;
     }
 
-    simulateAuthMutation.mutate(undefined, {
+    signUpMutation.mutate(undefined, {
       onSuccess: () => {
         router.replace("/(tabs)");
       },
@@ -67,7 +69,7 @@ function SignupScreen() {
       {/* header */}
       <View style={styles.header}>
         <AntDesign
-          name="checkcircle"
+          name="check-circle"
           size={60}
           color={"#fff"}
           style={styles.icon}
@@ -149,7 +151,7 @@ function SignupScreen() {
               style={styles.togglePasswordVisibility}
             >
               <AntDesign
-                name={isPasswordVisible ? "eyeo" : "eye"}
+                name={isPasswordVisible ? "eye-invisible" : "eye"}
                 size={30}
                 color="#0EA5E9"
               />
@@ -162,7 +164,7 @@ function SignupScreen() {
       <View style={styles.buttonContainer}>
         <Pressable style={styles.button} onPress={handleSubmit(onSubmit)}>
           <Text style={styles.buttonText}>
-            {simulateAuthMutation.isPending ? (
+            {signUpMutation.isPending ? (
               <ActivityIndicator size="small" color="#fff" />
             ) : (
               "Sign up"

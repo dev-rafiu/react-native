@@ -1,15 +1,10 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
+import { TSlide } from "../definitions";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("screen");
 
-export type TItem = {
-  id: number;
-  icon: any;
-  text: string;
-};
-
-function OnboardingItem({ item }: { item: TItem }) {
+function OnboardingSlide({ item }: { item: TSlide }) {
   const { icon, text } = item;
 
   return (
@@ -25,7 +20,7 @@ function OnboardingItem({ item }: { item: TItem }) {
   );
 }
 
-export default OnboardingItem;
+export default OnboardingSlide;
 
 const styles = StyleSheet.create({
   parentView: {

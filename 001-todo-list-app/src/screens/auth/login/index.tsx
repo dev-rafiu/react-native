@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LinearGradient } from "expo-linear-gradient";
 import { Controller, useForm } from "react-hook-form";
@@ -17,7 +18,6 @@ import { setLoggedIn, useLogin } from "@/src/hooks/useAuth";
 import { AntDesign } from "@expo/vector-icons";
 import { useQueryClient } from "@tanstack/react-query";
 import { Link, router } from "expo-router";
-import { useState } from "react";
 
 import { z } from "zod";
 
@@ -38,6 +38,7 @@ function LoginScreen() {
       password: "0000",
     },
   });
+
   const onSubmit = (data: FormSchema) => {
     if (data.email === "" || data.password === "") {
       Alert.alert("Please fill in all fields");
@@ -69,8 +70,8 @@ function LoginScreen() {
       {/* header */}
       <View>
         <AntDesign
-          name="checkcircle"
-          size={60}
+          name="check-circle"
+          size={40}
           color={"#fff"}
           style={styles.icon}
         />
@@ -135,13 +136,14 @@ function LoginScreen() {
               )}
             />
 
+            {/* password toggle */}
             <Pressable
               style={styles.togglePasswordVisibility}
               onPress={togglePasswordVisibility}
             >
               <AntDesign
-                name={isPasswordVisible ? "eyeo" : "eye"}
-                size={30}
+                name={isPasswordVisible ? "eye-invisible" : "eye"}
+                size={23}
                 color="#0EA5E9"
               />
             </Pressable>

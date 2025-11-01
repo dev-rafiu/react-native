@@ -22,15 +22,15 @@ export default function RootLayout() {
   const [appIsReady, setAppIsReady] = useState(false);
 
   const [fontsLoaded] = useFonts({
-    "Poppins-Thin": require("../assets/fonts/Poppins/Poppins-Thin.ttf"),
-    "Poppins-ExtraLight": require("../assets/fonts/Poppins/Poppins-ExtraLight.ttf"),
-    "Poppins-Light": require("../assets/fonts/Poppins/Poppins-Light.ttf"),
-    "Poppins-Regular": require("../assets/fonts/Poppins/Poppins-Regular.ttf"),
-    "Poppins-Medium": require("../assets/fonts/Poppins/Poppins-Medium.ttf"),
-    "Poppins-SemiBold": require("../assets/fonts/Poppins/Poppins-SemiBold.ttf"),
-    "Poppins-Bold": require("../assets/fonts/Poppins/Poppins-Bold.ttf"),
-    "Poppins-ExtraBold": require("../assets/fonts/Poppins/Poppins-ExtraBold.ttf"),
-    "Poppins-Black": require("../assets/fonts/Poppins/Poppins-Black.ttf"),
+    "Poppins-Thin": require("../../assets/fonts/Poppins/Poppins-Thin.ttf"),
+    "Poppins-ExtraLight": require("../../assets/fonts/Poppins/Poppins-ExtraLight.ttf"),
+    "Poppins-Light": require("../../assets/fonts/Poppins/Poppins-Light.ttf"),
+    "Poppins-Regular": require("../../assets/fonts/Poppins/Poppins-Regular.ttf"),
+    "Poppins-Medium": require("../../assets/fonts/Poppins/Poppins-Medium.ttf"),
+    "Poppins-SemiBold": require("../../assets/fonts/Poppins/Poppins-SemiBold.ttf"),
+    "Poppins-Bold": require("../../assets/fonts/Poppins/Poppins-Bold.ttf"),
+    "Poppins-ExtraBold": require("../../assets/fonts/Poppins/Poppins-ExtraBold.ttf"),
+    "Poppins-Black": require("../../assets/fonts/Poppins/Poppins-Black.ttf"),
   });
 
   SplashScreen.preventAutoHideAsync();
