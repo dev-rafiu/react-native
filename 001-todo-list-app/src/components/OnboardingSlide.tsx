@@ -1,5 +1,5 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
+import { Dimensions, Image, Text, View } from "react-native";
 import { TSlide } from "../definitions";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("screen");
@@ -10,46 +10,21 @@ function OnboardingSlide({ item }: { item: TSlide }) {
   return (
     <LinearGradient
       colors={["#1253AA", "#082D52", "#05243E"]}
-      style={styles.parentView}
+      className="p-5"
+      style={{ width: screenWidth, height: screenHeight }}
     >
-      <View style={styles.container}>
-        <Image source={icon} style={styles.image} />
-        <Text style={styles.text}>{text}</Text>
+      <View className="flex-1 items-center mt-[100px] gap-5">
+        <Image
+          source={icon}
+          className="w-[300px] h-[300px] mx-auto"
+          style={{ objectFit: "contain" }}
+        />
+        <Text className="text-lg text-white max-w-[240px] font-[Poppins-Regular] leading-[23px] text-center font-extrabold">
+          {text}
+        </Text>
       </View>
     </LinearGradient>
   );
 }
 
 export default OnboardingSlide;
-
-const styles = StyleSheet.create({
-  parentView: {
-    width: screenWidth,
-    height: screenHeight,
-    padding: 20,
-  },
-
-  container: {
-    flex: 1,
-    alignItems: "center",
-    marginTop: 100,
-    gap: 20,
-  },
-
-  image: {
-    width: 300,
-    height: 300,
-    marginHorizontal: "auto",
-    objectFit: "contain",
-  },
-
-  text: {
-    fontSize: 18,
-    color: "#fff",
-    maxWidth: 240,
-    fontFamily: "Poppins-Regular",
-    lineHeight: 23,
-    textAlign: "center",
-    fontWeight: "800",
-  },
-});

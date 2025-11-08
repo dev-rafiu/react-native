@@ -26,35 +26,16 @@ export default function NavigationHeader({
   };
 
   return (
-    <View style={[styles.container]}>
-      <View style={styles.content}>
-        {showBackButton && (
-          <Pressable
-            onPress={handleBackPress}
-            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-          >
-            <Ionicons name="chevron-back" size={24} color="#fff" />
-          </Pressable>
-        )}
-        {title && <Text style={styles.title}>{title}</Text>}
-      </View>
+    <View className="flex-row items-center gap-2 mb-4">
+      {showBackButton && (
+        <Pressable
+          onPress={handleBackPress}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
+          <Ionicons name="chevron-back" size={24} color="#fff" />
+        </Pressable>
+      )}
+      {title && <Text className="text-white text-lg font-medium">{title}</Text>}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: 20,
-  },
-
-  content: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-  },
-
-  title: {
-    color: "#fff",
-    fontSize: 20,
-  },
-});

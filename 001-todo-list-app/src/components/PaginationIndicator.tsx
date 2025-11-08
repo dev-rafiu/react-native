@@ -1,4 +1,4 @@
-import { Animated, StyleSheet, useWindowDimensions, View } from "react-native";
+import { Animated, useWindowDimensions, View } from "react-native";
 import { TSlide } from "../definitions";
 
 type TProps = {
@@ -10,7 +10,7 @@ function PaginationinIndicator({ data, scrollX }: TProps) {
   const { width } = useWindowDimensions();
 
   return (
-    <View style={styles.container}>
+    <View className="flex-row">
       {data.map((_, i) => {
         const inputRange = [(i - 1) * width, i * width, (i + 1) * width];
 
@@ -29,13 +29,11 @@ function PaginationinIndicator({ data, scrollX }: TProps) {
         return (
           <Animated.View
             key={i}
-            style={[
-              styles.dot,
-              {
-                width: dotWidth,
-                opacity,
-              },
-            ]}
+            className="h-[7px] rounded-[10px] bg-white mx-2"
+            style={{
+              width: dotWidth,
+              opacity,
+            }}
           />
         );
       })}
@@ -44,16 +42,3 @@ function PaginationinIndicator({ data, scrollX }: TProps) {
 }
 
 export default PaginationinIndicator;
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-  },
-
-  dot: {
-    height: 7,
-    borderRadius: 10,
-    backgroundColor: "#FFFFFF",
-    marginHorizontal: 8,
-  },
-});

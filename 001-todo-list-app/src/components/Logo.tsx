@@ -1,4 +1,4 @@
-import { Text, StyleSheet, TextProps } from "react-native";
+import { Text, TextProps } from "react-native";
 
 interface LogoProps extends TextProps {
   size?: number;
@@ -15,12 +15,14 @@ export function Logo({
 }: LogoProps) {
   return (
     <Text
+      className="font-black tracking-[4px]"
       style={[
-        styles.logo,
         {
           fontSize: size,
           color,
           textShadowColor: glowColor,
+          textShadowOffset: { width: 0, height: 0 },
+          textShadowRadius: 12,
         },
         style,
       ]}
@@ -30,12 +32,3 @@ export function Logo({
     </Text>
   );
 }
-
-const styles = StyleSheet.create({
-  logo: {
-    fontWeight: "900",
-    letterSpacing: 4,
-    textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 12,
-  },
-});

@@ -1,15 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import { router, useSegments } from "expo-router";
 import React, { useState } from "react";
-import {
-  Pressable,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Pressable, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Typography } from "../constants/Typography";
 
 interface StickyHeaderProps {
   title?: string;
@@ -72,45 +65,44 @@ const StickyHeader: React.FC<StickyHeaderProps> = ({ title }) => {
 
   return (
     <>
-      <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
-        <Text style={styles.title}>{displayTitle}</Text>
+      <View
+        className="absolute top-0 left-0 right-0 z-[1000] flex-row items-center justify-between px-5 shadow-lg"
+        style={{ paddingTop: insets.top + 10 }}
+      >
+        <Text className="text-white text-base font-semibold font-[Poppins-Regular]">
+          {displayTitle}
+        </Text>
 
         <TouchableOpacity
-          style={styles.menuButton}
+          className="p-2 rounded-[20px] bg-white/10"
           onPress={handleMenuPress}
           activeOpacity={0.7}
         >
-          <Ionicons
-            name="ellipsis-vertical"
-            size={24}
-            color="#fff"
-            style={styles.menuButtonIcon}
-          />
+          <Ionicons name="ellipsis-vertical" size={24} color="#fff" />
         </TouchableOpacity>
       </View>
 
       {isMenuVisible && (
         <>
           <Pressable
-            style={styles.dropdownOverlay}
+            className="absolute top-0 left-0 right-0 bottom-0 z-[999]"
             onPress={() => setIsMenuVisible(false)}
           />
-          <View style={[styles.dropdownContainer, { top: insets.top + 65 }]}>
+          <View
+            className="absolute right-5 z-[1001] bg-[#102D53] rounded-xl min-w-[180px] shadow-xl overflow-hidden"
+            style={{ top: insets.top + 65 }}
+          >
             {menuOptions.map((option) => (
               <TouchableOpacity
                 key={option.id}
-                style={[
-                  styles.menuOption,
-                  !option.enabled && styles.menuOptionDisabled,
-                ]}
+                className={`px-4 py-3.5 ${!option.enabled ? "opacity-50" : ""}`}
                 onPress={() => handleOptionPress(option.id, option.enabled)}
                 disabled={!option.enabled}
               >
                 <Text
-                  style={[
-                    styles.menuOptionText,
-                    !option.enabled && styles.menuOptionTextDisabled,
-                  ]}
+                  className={`text-base font-[Poppins-Regular] leading-6 tracking-[0.1px] ${
+                    !option.enabled ? "text-[#666]" : "text-white"
+                  }`}
                 >
                   {option.label}
                 </Text>
@@ -122,90 +114,5 @@ const StickyHeader: React.FC<StickyHeaderProps> = ({ title }) => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  header: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 1000,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 5,
-  },
-
-  menuButtonIcon: {
-    color: "#fff",
-  },
-
-  title: {
-    ...Typography.bodyMedium,
-    color: "#fff",
-    fontWeight: "600",
-    fontSize: 16,
-  },
-
-  menuButton: {
-    padding: 8,
-    borderRadius: 20,
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-  },
-
-  dropdownOverlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 999,
-  },
-
-  dropdownContainer: {
-    position: "absolute",
-    right: 20,
-    zIndex: 1001,
-    backgroundColor: "#102D53",
-    borderRadius: 12,
-    minWidth: 180,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
-    overflow: "hidden",
-  },
-
-  menuOption: {
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-  },
-
-  menuOptionText: {
-    ...Typography.bodyMedium,
-    color: "#fff",
-    fontSize: 16,
-  },
-
-  menuOptionDisabled: {
-    opacity: 0.5,
-  },
-
-  menuOptionTextDisabled: {
-    color: "#666",
-  },
-});
 
 export default StickyHeader;

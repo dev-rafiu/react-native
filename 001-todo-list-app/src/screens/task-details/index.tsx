@@ -60,19 +60,26 @@ export default function TaskDetailsScreen() {
       style={styles.container}
     >
       <SafeAreaView>
-        <NavigationHeader title="Task Details" />
+        <NavigationHeader />
 
         {!task ? (
-          <Text style={styles.notFoundText}>Task not found</Text>
+          <Text className="text-white text-base text-center mt-[50px]">
+            Task not found
+          </Text>
         ) : (
-          <View style={styles.taskDetailsContainer}>
-            <Text style={styles.taskTitle}>{task.title}</Text>
-            <Text style={styles.taskDescription}>{task.description}</Text>
+          <View className="mt-5 p-5 bg-white/10 rounded-xl">
+            <Text className="text-white text-2xl font-bold mb-3">
+              {task.title}
+            </Text>
 
-            <View style={styles.taskMetaContainer}>
-              <View style={styles.metaItem}>
+            <Text className="text-white text-base leading-6 mb-5">
+              {task.description}
+            </Text>
+
+            <View className="gap-3">
+              <View className="flex-row items-center gap-3">
                 <Ionicons name="calendar-outline" size={20} color="#fff" />
-                <Text style={styles.metaText}>
+                <Text className="text-white text-base">
                   {new Date(task.date).toLocaleDateString("en-US", {
                     weekday: "long",
                     year: "numeric",
@@ -82,9 +89,9 @@ export default function TaskDetailsScreen() {
                 </Text>
               </View>
 
-              <View style={styles.metaItem}>
+              <View className="flex-row items-center gap-3">
                 <Ionicons name="time-outline" size={20} color="#fff" />
-                <Text style={styles.metaText}>
+                <Text className="text-white text-base">
                   {new Date(task.time).toLocaleTimeString("en-US", {
                     hour: "2-digit",
                     minute: "2-digit",
@@ -93,7 +100,7 @@ export default function TaskDetailsScreen() {
               </View>
 
               {task.completed !== undefined && (
-                <View style={styles.metaItem}>
+                <View className="flex-row items-center gap-3">
                   <Ionicons
                     name={
                       task.completed ? "checkmark-circle" : "ellipse-outline"
@@ -101,7 +108,7 @@ export default function TaskDetailsScreen() {
                     size={20}
                     color={task.completed ? "#4CAF50" : "#fff"}
                   />
-                  <Text style={styles.metaText}>
+                  <Text className="text-white text-base">
                     {task.completed ? "Completed" : "Pending"}
                   </Text>
                 </View>
@@ -109,26 +116,32 @@ export default function TaskDetailsScreen() {
             </View>
 
             {/* action buttons */}
-            <View style={styles.actionButtonsContainer}>
+            <View className="flex-row justify-around mt-[30px] pt-5 border-t border-white/20">
               <Pressable
-                style={styles.actionButton}
+                className="items-center py-2.5 px-4 rounded-lg bg-white/10 min-w-[80px]"
                 onPress={handleMarkTaskAsDone}
               >
                 <Ionicons name="checkmark-circle" size={24} color="#4CAF50" />
-                <Text style={styles.actionButtonText}>Done</Text>
+                <Text className="text-white text-sm font-semibold mt-1.5">
+                  Done
+                </Text>
               </Pressable>
 
               <Pressable
-                style={styles.actionButton}
+                className="items-center py-2.5 px-4 rounded-lg bg-white/10 min-w-[80px]"
                 onPress={showDeleteConfirmation}
               >
                 <Ionicons name="trash-outline" size={24} color="#FF6B6B" />
-                <Text style={styles.actionButtonText}>Delete</Text>
+                <Text className="text-white text-sm font-semibold mt-1.5">
+                  Delete
+                </Text>
               </Pressable>
 
-              <Pressable style={styles.actionButton}>
+              <Pressable className="items-center py-2.5 px-4 rounded-lg bg-white/10 min-w-[80px]">
                 <Ionicons name="bookmark" size={24} color="#FFA726" />
-                <Text style={styles.actionButtonText}>Pin</Text>
+                <Text className="text-white text-sm font-semibold mt-1.5">
+                  Pin
+                </Text>
               </Pressable>
             </View>
           </View>
@@ -142,100 +155,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-  },
-
-  loadingText: {
-    color: "#fff",
-    fontSize: 16,
-    textAlign: "center",
-    marginTop: 50,
-  },
-
-  errorText: {
-    color: "#ff6b6b",
-    fontSize: 16,
-    textAlign: "center",
-    marginBottom: 20,
-  },
-
-  retryButton: {
-    backgroundColor: "#0EA5E9",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 8,
-  },
-
-  retryButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-
-  taskDetailsContainer: {
-    marginTop: 20,
-    padding: 20,
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-    borderRadius: 12,
-  },
-
-  taskTitle: {
-    color: "#fff",
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 12,
-  },
-
-  taskDescription: {
-    color: "#fff",
-    fontSize: 16,
-    lineHeight: 24,
-    marginBottom: 20,
-  },
-
-  taskMetaContainer: {
-    gap: 12,
-  },
-
-  metaItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-  },
-
-  metaText: {
-    color: "#fff",
-    fontSize: 16,
-  },
-
-  notFoundText: {
-    color: "#fff",
-    fontSize: 16,
-    textAlign: "center",
-    marginTop: 50,
-  },
-
-  actionButtonsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    marginTop: 30,
-    paddingTop: 20,
-    borderTopWidth: 1,
-    borderTopColor: "rgba(255, 255, 255, 0.2)",
-  },
-
-  actionButton: {
-    alignItems: "center",
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-    minWidth: 80,
-  },
-
-  actionButtonText: {
-    color: "#fff",
-    fontSize: 14,
-    fontWeight: "600",
-    marginTop: 6,
   },
 });

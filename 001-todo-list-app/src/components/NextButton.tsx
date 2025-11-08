@@ -1,5 +1,5 @@
 import { AntDesign } from "@expo/vector-icons";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Pressable } from "react-native";
 
 type Props = {
   scrollTo: () => void;
@@ -7,29 +7,17 @@ type Props = {
 };
 function NextButton({ scrollTo, isLastScreen }: Props) {
   return (
-    <View style={styles.container}>
-      <Pressable onPress={scrollTo} style={styles.button}>
-        {isLastScreen ? (
-          <AntDesign name="check" size={32} color={"#000"} />
-        ) : (
-          <AntDesign name="arrow-right" size={32} color={"#000"} />
-        )}
-      </Pressable>
-    </View>
+    <Pressable
+      onPress={scrollTo}
+      className="w-16 h-16 rounded-full bg-white items-center justify-center"
+    >
+      {isLastScreen ? (
+        <AntDesign name="check" size={32} color={"#000"} />
+      ) : (
+        <AntDesign name="arrow-right" size={32} color={"#000"} />
+      )}
+    </Pressable>
   );
 }
 
 export default NextButton;
-
-const styles = StyleSheet.create({
-  container: {},
-
-  button: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
